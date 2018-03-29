@@ -1,0 +1,6 @@
+unprotected.example.com:443 {
+	root /srv/www/htdocs/unprotected
+	tls /opt/easyrsa/pki/issued/unprotected.example.com.crt /opt/easyrsa/pki/private/unprotected.example.com.key {
+		ca /opt/easyrsa/pki/ca.crt
+	}
+}
