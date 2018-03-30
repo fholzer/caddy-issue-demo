@@ -71,3 +71,23 @@ sleep 1
 runTestsProtected
 kill $CPID
 sleep 1
+
+
+echo
+echo Suite 4
+echo protected and unprotected server with same hostname but different base path
+
+:> Caddyfile
+cat Caddyfile.part.protected >> Caddyfile
+cat Caddyfile.part.protected2 >> Caddyfile
+
+# run server
+./caddy -conf Caddyfile  &
+CPID=$!
+sleep 1
+runTestsProtected
+echo -n "Should require client authentication on protected vhost..."
+curl -s -f --cacert $CACERT --resolve protected.example.com:443:127.0.0.1 https://protected.example.com/2/ 1>/dev/null 2>&1
+[ "x$?" == "x35" ] && echo "OK" || echo "FAILED"
+kill $CPID
+sleep 1
